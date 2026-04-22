@@ -1,0 +1,32 @@
+{
+  "1" : {
+    "id" : 1,
+    "username" : "employee001",
+    "email" : "email001@gmail.com",
+    "password" : "password001"
+  },
+  "2" : {
+    "id" : 2,
+    "username" : "employee002",
+    "email" : "email002@gmail.com",
+    "password" : "password002"
+  },
+  "3" : {
+    "id" : 3,
+    "username" : "employee003",
+    "email" : "email003@gmail.com",
+    "password" : "password003"
+  },
+  "4" : {
+    "id" : 4,
+    "username" : "employee004",
+    "email" : "email004@gmail.com",
+    "password" : "password004"
+  },
+  "5" : {
+    "id" : 5,
+    "username" : "employee005",
+    "email" : "email005@gmail.com",
+    "password" : "password005"
+  }
+}
