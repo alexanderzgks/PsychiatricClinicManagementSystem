@@ -5,11 +5,15 @@ import org.example.repo.LoginRepository;
 
 import java.io.IOException;
 
+/**
+ * Coordinates email lookup and password verification for the console login
+ * process.
+ */
 public class LoginValidator {
 
     private Integer id;
 
-    //It sees if the email exists
+    // Resolves the employee id behind the submitted email and keeps it for the next step.
     public boolean loginEmail(String email) throws IOException{
         LoginRepository repo= new LoginRepository();
         id = repo.read(email);
@@ -19,7 +23,7 @@ public class LoginValidator {
         return true;
     }
 
-    //It is checking if the code is correct
+    // Delegates password validation to the employee repository for the resolved employee id.
     public boolean login(EmployeeRepository employee,String code) throws IOException {
         return employee.readPassword(id, code);
     }

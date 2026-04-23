@@ -12,27 +12,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
+/**
+ * Persists and retrieves employee records from the JSON storage used by the
+ * application.
+ */
 public class EmployeeRepository {
 
     private final ObjectMapper mapper;
     private final Path path;
     private HashMap<Integer, Employee> employee;
 
-    //Constructor
+    // Prepares the JSON mapper and points the repository to the employee data file.
     public EmployeeRepository() throws IOException{
         this.mapper = new ObjectMapper();
         this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
         this.path = Path.of("src/main/resources/data/employee/employee.json");
     }
 
-    //We suppose that when the JSON files exist it is not empty.
+    // Uses the presence of the file as the repository initialization check.
     public boolean isEmpty(){
         return Files.exists(path);
     }
 
-    //Save the Fake Employee
+    // Writes all employee records to disk, creating the folder structure when needed.
     public void save(HashMap<Integer, Employee> map) throws IOException{
-        if(map.isEmpty()){
+        if(isEmpty()){
             throw new IllegalArgumentException("EmployeeRepository.save(): The map of the employee is empty");
         }
         if(!Files.exists(path.getParent())){
@@ -41,7 +45,7 @@ public class EmployeeRepository {
         mapper.writeValue(path.toFile(), map);
     }
 
-    //Get one Employee
+    // Loads a single employee by id, refreshing the in-memory cache on first access.
     public Employee getEmployee(Integer id) throws IOException{
         if(id==null){
             throw new IllegalArgumentException("EmployeeRepository.read(): Id is null");
@@ -55,7 +59,7 @@ public class EmployeeRepository {
         return employee.getOrDefault(id, null);
     }
 
-    //Check if the Password
+    // Validates that the stored password for the given employee matches the input.
     public boolean readPassword(Integer id, String password) throws IOException {
         if (id == null) {
             throw new IllegalArgumentException("EmployeeRepository.read(): Id is null");

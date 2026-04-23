@@ -2,6 +2,10 @@ package org.example.services.general;
 
 import org.example.model.Employee;
 
+/**
+ * Wraps the logged-in employee so the rest of the application can access the
+ * current user information.
+ */
 public class UserSession {
 
     private Employee loggedIn;

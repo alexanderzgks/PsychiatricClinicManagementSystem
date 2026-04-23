@@ -11,26 +11,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
+/**
+ * Persists patient records and provides JSON-backed read access by id or as a
+ * full collection.
+ */
 public class PatientRepository {
 
     private final ObjectMapper mapper;
     private final Path path;
     private HashMap<Integer, Patient> patient;
 
+    // Prepares the JSON mapper and the storage location for patient data.
     public PatientRepository() throws IOException{
         this.mapper = new ObjectMapper();
         this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
         this.path = Path.of("src/main/resources/data/patient/patient.json");
     }
 
-    //We suppose that when the JSON files exist it is not empty.
+    // Uses file existence as a simple repository initialization check.
     public boolean isEmpty(){
         return Files.exists(path);
     }
 
-    //Save Fake Patient
+    // Persists the provided patient records, creating the data folder if required.
     public void save(HashMap<Integer, Patient> map) throws IOException{
-        if(map.isEmpty()){
+        if(isEmpty()){
             throw new IllegalArgumentException("PatientRepository.save(): The map of patient is empty");
         }
         if(!Files.exists(path.getParent())){
@@ -39,7 +44,7 @@ public class PatientRepository {
         mapper.writeValue(path.toFile(), map);
     }
 
-    //Get one Patient
+    // Loads one patient by id, initializing the in-memory cache on first use.
     public Patient getPatient(Integer id) throws IOException{
         if(id == null){
             throw new IllegalArgumentException("PatientRepository.getEmployee(): The id is null");
@@ -53,7 +58,7 @@ public class PatientRepository {
         return patient.getOrDefault(id, null);
     }
 
-    //Get all Patient
+    // Reads the entire patient dataset from disk.
     public HashMap<Integer, Patient> read() throws IOException{
         return mapper.readValue(path.toFile(), new TypeReference<HashMap<Integer, Patient>>() {});
     }

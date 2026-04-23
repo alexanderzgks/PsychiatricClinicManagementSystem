@@ -8,8 +8,16 @@ import org.example.services.auth.LoginValidator;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Handles the interactive console login flow and returns the employee session
+ * once the credentials are validated.
+ */
 public class Login {
 
+    /**
+     * Repeats the login prompt until a valid email and password pair is
+     * provided, then builds the session for the matching employee.
+     */
     public static UserSession logIn(EmployeeRepository repo) throws IOException {
         LoginValidator validator = new LoginValidator();
         Scanner scanner = new Scanner(System.in);

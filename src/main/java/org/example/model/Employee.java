@@ -3,6 +3,10 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Represents a clinic employee account stored in JSON and used during
+ * authentication.
+ */
 public class Employee {
 
     private int id;

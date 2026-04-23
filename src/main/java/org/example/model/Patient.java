@@ -3,6 +3,10 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Represents a patient record with basic profile and condition data persisted
+ * in JSON.
+ */
 public class Patient {
 
     private int id;
