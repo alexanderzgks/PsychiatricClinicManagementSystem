@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.example.model.Employee;
+import org.example.model.Patient;
 import org.example.services.repositorySupport.PathManager;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class EmployeeRepository {
     }
 
     //We suppose that when the JSON files exist it is not empty.
-    public boolean isEmpty() throws IOException{
+    public boolean isEmpty(){
         return Files.exists(path);
     }
 
@@ -40,6 +41,7 @@ public class EmployeeRepository {
         mapper.writeValue(path.toFile(), map);
     }
 
+    //Get one Employee
     public Employee getEmployee(Integer id) throws IOException{
         if(id==null){
             throw new IllegalArgumentException("EmployeeRepository.read(): Id is null");
@@ -48,14 +50,9 @@ public class EmployeeRepository {
             throw new IllegalArgumentException("EmployeeRepository.read(): Path does not exist");
         }
         if(employee.isEmpty()){
-            if(!employee.containsKey(id)) {
-                employee.clear();
-                employee =  mapper.readValue(path.toFile(), new TypeReference<HashMap<Integer, Employee>>() {});
-            }
-        }else{
-            employee =  mapper.readValue(path.toFile(), new TypeReference<HashMap<Integer, Employee>>() {});
+            employee =  read();
         }
-        return employee.get(id);
+        return employee.getOrDefault(id, null);
     }
 
     //Check if the Password
@@ -66,13 +63,16 @@ public class EmployeeRepository {
         if (!Files.exists(path)) {
             throw new IllegalArgumentException("EmployeeRepository.read(): Path does not exist");
         }
-        employee = mapper.readValue(path.toFile(), new TypeReference<HashMap<Integer, Employee>>() {
-        });
+        employee = read();
         String code = employee.get(id).getPassword();
         if (!code.equals(password)) {
             return false;
         }
         return true;
+    }
+
+    private HashMap<Integer, Employee> read() throws IOException{
+        return mapper.readValue(path.toFile(), new TypeReference<HashMap<Integer, Employee>>() {});
     }
 
 }
